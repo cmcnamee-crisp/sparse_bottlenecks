@@ -1,0 +1,21 @@
+{
+    "script": "dataset",
+    "use_gpu": false,
+    "settings": {
+        "seed": [
+            6,7,8,9,10
+        ],
+        "color_corr": [
+            0.0556,
+            0.9,
+            0.99,
+            1.0
+        ],
+        "colors": [
+            true
+        ],
+        "data_path": [
+            "colors"
+        ]
+    }
+}

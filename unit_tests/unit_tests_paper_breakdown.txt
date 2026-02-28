@@ -1,0 +1,310 @@
+================================================================================
+PAPER BREAKDOWN: "Unit Testing for Concepts in Neural Networks"
+Authors: Charles Lovering, Ellie Pavlick (Brown University)
+arXiv:2208.10244v2  [cs.CL]  25 Nov 2022
+================================================================================
+
+GOAL: Determine whether neural networks learn internal representations consistent
+with Fodor's (1998) theory of symbolic concepts — specifically testing for
+grounded, reusable, modular, and causal conceptual representations.
+
+================================================================================
+1. MODELS USED (5 total)
+================================================================================
+
+PRETRAINED MODELS (used as frozen encoders, no additional training on the task):
+  1. RNIMG     — ResNet pretrained on ImageNet (He et al., 2016)
+  2. ViTCLIP   — Vision Transformer from CLIP (Dosovitskiy et al., 2020; Radford et al., 2021)
+  3. RNCLIP    — ResNet from CLIP (Radford et al., 2021)
+
+FROM-SCRATCH MODELS (randomly initialized, finetuned on classification task):
+  4. RNNoPre   — Randomly initialized ResNet (same architecture as RNIMG)
+  5. CNNNoPre  — Custom 4-layer CNN:
+                  - Filters: (64, 32, 16, 8)
+                  - Kernel size: 3
+                  - Stride: 2
+                  - Batch normalization + ReLU activations
+
+ALL MODELS USE:
+  - encode: the model backbone maps image X → internal representation Z
+  - predict: linear probing classifier over Z to predict label Y
+             Trained with Adam optimizer
+  - has_concept: linear probing classifier over Z to detect atomic concepts
+  - ablate: Iterative Nullspace Linear Projection (INLP) (Ravfogel et al., 2020)
+            Removes linear directions that separate concept instances
+            Only first iteration used (removes most salient direction)
+
+KEY CONSTRAINT: Because INLP only removes LINEAR information, predict and
+has_concept are restricted to LINEAR models only.
+
+================================================================================
+2. DATASET
+================================================================================
+
+DEFAULT DATASET:
+  - Synthetic image dataset
+  - 18 classes total
+  - 1000 training examples per class (18,000 total)
+  - Each class is a composite concept = combination of 3 atomic concepts:
+      Layout (3 values):  horizontal, vertical, ring
+      Shape  (3 values):  rectangle, oval, polygon
+      Stroke (2 values):  clean, fuzzy
+  - 3 × 3 × 2 = 18 classes
+  - Images saved as PNG, resized to model's max resolution (256×256 for ImageNet)
+  - Each class has a nonsense word label: dax, blick, glorp, boop, bip, glick,
+    surp, gix, blug, wix, gip, dok, slup, wug, wok, gurp, bix, blorp
+
+COLORS DATASET (variant for testing robustness):
+  - Same structure but color of shapes is correlated with class label
+  - Tested at correlation levels p ∈ {RAND (5.6% = 1/18), 90%, 99%, 100%}
+  - Purpose: emulates spurious feature correlations
+
+SEEN vs UNSEEN SPLIT:
+  - "slice" = set of composite concepts sharing same atomic concepts except
+    along one dimension (e.g., dax/surp/slup differ only in layout)
+  - Two training settings for diagnostic functions:
+      1 Slice:    has_concept trained on 1 class per concept
+                  (e.g., "horizontal" only seen via "dax")
+      N-1 Slices: has_concept trained on many classes per concept
+                  (e.g., "horizontal" seen via multiple classes)
+  - Evaluation focuses on UNSEEN classes (seen classes always ~>99%)
+
+HUMAN BASELINE:
+  - 150 Mechanical Turk workers
+  - Given 3 exemplars per class, asked to classify novel instances
+  - 1500 predictions total
+  - 63% majority agreement with ground truth (over 5.6% chance)
+  - Errors are systematic (e.g., confusing clean vs fuzzy edges)
+
+================================================================================
+3. EXPERIMENTS (4 Unit Tests + 1 Analysis)
+================================================================================
+
+------------------------------------------------------------------------------
+TEST 1: is_grounded (Section 5)
+Fodor Criteria: C2 (concepts apply to external world) + C5 (concepts are shared)
+------------------------------------------------------------------------------
+
+QUESTION: Does the model respond to changes in perceptual inputs the way
+an idealized human would?
+
+EXPERIMENTAL DESIGN:
+  - Use counterfactual minimal pairs
+  - Sample 1000 sets of background parameters (location, size of shapes)
+  - Render each parameter set for every combination of shape × stroke × layout
+  - This ensures pairs differ ONLY in the target atomic concept
+  - In colors dataset: color treated as background parameter
+  - Measure: P(predict(encode(x)) == gt_label(x))
+
+METRIC: Classification accuracy on minimal pairs
+
+RESULTS (Default dataset):
+  - All models: ~98% accuracy → PASS
+
+RESULTS (Colors dataset — out-of-distribution minimal pairs):
+  - RAND (5.6% correlation): ~98% for all
+  - 90% correlation: pretrained models ~90%, from-scratch models degrade more
+  - 99% correlation: pretrained ~75%, from-scratch much lower
+  - 100% correlation: pretrained ~50%, from-scratch near chance
+  - KEY FINDING: Pretrained models show inductive bias for shape over color
+
+------------------------------------------------------------------------------
+TEST 2: is_token_of_type (Section 6)
+Fodor Criteria: C3 (concepts are constituents of thoughts)
+------------------------------------------------------------------------------
+
+QUESTION: Can different instances of the same concept be mapped to the same
+discrete type in a reusable way?
+
+EXPERIMENTAL DESIGN:
+  - Train has_concept on a subset of slices (1 slice or N-1 slices)
+  - E.g., train layout detector on dax/surp/slup (which differ only in layout)
+  - Test generalization to UNSEEN classes (e.g., blick/gix/wug)
+  - Good generalization = concept representations are context-independent
+  - Poor generalization = representations are context-dependent
+
+METRIC: Classification accuracy of has_concept on unseen classes
+  - Random baseline: 33% for layout and shape, 50% for stroke
+
+RESULTS:
+  - Seen classes: >99% for all models (not shown)
+  - Unseen classes (N-1 slices): Near-perfect for all models → PASS
+  - Unseen classes (1 slice): ~75%, still well above chance → PASS (weaker)
+  - All 5 models show similar patterns (no clear pretraining advantage)
+
+------------------------------------------------------------------------------
+TEST 3: is_modular (Section 7)
+Fodor Criteria: C3 (constituency structure, productivity)
+------------------------------------------------------------------------------
+
+QUESTION: Can one constituent concept be removed without damaging others?
+
+EXPERIMENTAL DESIGN:
+  - Use ablate (INLP) to remove one concept dimension (e.g., all 3 layouts)
+  - Then test has_concept on:
+      (a) The ablated concept → should be at/below random (ablation worked)
+      (b) The remaining concepts → should be high (still intact)
+  - For each dimension (layout, shape, stroke): run 3 sub-tests
+  - Threshold: >75% accuracy = "high"; random = 33% (layout/shape), 50% (stroke)
+
+METRIC: has_concept accuracy on ablated vs non-ablated concepts
+
+RESULTS:
+  - Ablated concept accuracy: low (near random) → ablation works → PASS
+  - Other concept accuracy: high → concepts are modular → PASS
+  - N-1 slices setting: clean results
+  - 1 slice setting: higher variance, sometimes partial entanglement
+  - All 5 models largely successful
+
+------------------------------------------------------------------------------
+TEST 4: is_causal (Section 8)
+Fodor Criteria: C1 (concepts are mental causes and effects)
+------------------------------------------------------------------------------
+
+QUESTION: Does removing a constituent concept from the internal representation
+cause expected changes in the model's PREDICTIONS?
+
+EXPERIMENTAL DESIGN:
+  - Use ablate to remove a concept dimension from encode(x)
+  - Then run predict on the modified representation
+  - Two measures of accuracy:
+      (a) Rate predicted concept matches true concept along REMOVED dimension
+          → should be at random
+      (b) Rate predicted concept matches true concept along OTHER dimensions
+          → should be high (>75%)
+  - Threshold: >75% = high; random = 33% (layout/shape), 50% (stroke)
+
+METRIC: predict accuracy after concept ablation, split by removed vs other dims
+
+RESULTS:
+  - ALL MODELS FAIL THIS TEST
+  - Accuracy on ablated features stays FAR ABOVE random
+  - Pattern holds for:
+      • 1 slice and N-1 slices
+      • Seen and unseen classes
+  - Increasing INLP iterations: all concepts deteriorate (not selective) → also fail
+  - KEY FINDING: predict uses different information than has_concept
+    The model encodes atomic concepts AND composite concepts simultaneously;
+    predict relies on composite concept representations, not atomic ones
+
+------------------------------------------------------------------------------
+ANALYSIS: Concepts Across Layers (Section 9)
+------------------------------------------------------------------------------
+
+HYPOTHESIS: Causal structure exists but unfolds across layers — constituents
+are tokened in early layers, composed into composite concepts in later layers.
+
+EXPERIMENT 1 — Aggregate Analysis (Section 9.2):
+  - Train probing classifiers at each layer for:
+      • Each atomic concept (layout, shape, stroke)
+      • Composite concept (direct classification)
+  - Compute "composed probe accuracy" = product of atomic probe predictions
+  - Compare composed probe accuracy vs direct classification accuracy per layer
+
+  METRIC: Per-layer probing accuracy + composed vs direct accuracy comparison
+
+  RESULTS:
+    - Composite concepts recognized ONLY AFTER constituents → consistent
+    - Direct classification accuracy ≈ composed probe accuracy (often slightly higher)
+    - From-scratch models show slightly higher gap between direct and composed
+
+EXPERIMENT 2 — Instance-Level Analysis (Section 9.3):
+  - Compute Normalized Pointwise Mutual Information (NMI, range 0-1) between:
+      • Direct class prediction at each layer
+      • Composition of atomic probe predictions at each layer
+  - High NMI across layers → constituent probes cause composite prediction
+  - Low NMI → different internal information used
+
+  METRIC: NMI between composed probe predictions and direct predictions per layer
+
+  RESULTS:
+    - Low NMI until the final layer for most models → INCONCLUSIVE
+    - Probing and downstream models have similar aggregate error rates but
+      make DIFFERENT mistakes on individual instances
+    - ViTCLIP may be an exception (higher NMI across layers)
+    - Result is inconclusive: low NMI doesn't definitively mean no causal link
+
+================================================================================
+4. SUMMARY OF RESULTS
+================================================================================
+
+  Test                  | Result  | Evidence
+  ----------------------|---------|--------------------------------------------------
+  is_grounded           | PASS    | ~98% on default; pretrained robust to color bias
+  is_token_of_type      | PASS    | Strong generalization to unseen compositions
+  is_modular            | PASS    | Ablation removes target without harming others
+  is_causal             | FAIL    | Ablation doesn't degrade downstream predictions
+  Layer-wise analysis   | MIXED   | Aggregate trends consistent but instance-level NMI low
+
+================================================================================
+5. KEY FINDINGS & TAKEAWAYS
+================================================================================
+
+1. Models encode grounded, modular, reusable concept representations
+2. BUT these representations are NOT causally implicated in model predictions
+3. predict appears to use different internal features than has_concept
+4. Possible explanation: models token both atomic AND composite concepts,
+   with predict using only composite-level representations directly
+5. Pretraining provides inductive bias for shape > color (only clear
+   difference between pretrained and from-scratch models)
+6. More varied training data (N-1 slices vs 1 slice) improves generalization
+   of concept detectors
+7. Limitations of INLP (linear-only ablation) may contribute to is_causal failure
+8. Future work should explore non-linear ablation methods (e.g., Tucker et al., 2021;
+   Meng et al., 2022) and layer-wise concept manipulation
+
+================================================================================
+6. WHAT YOU NEED TO RECREATE THESE RESULTS
+================================================================================
+
+A. DATA GENERATION:
+   - Generate synthetic images with 3 × 3 × 2 = 18 classes
+   - Each image contains shapes arranged in a layout pattern
+   - Layouts: horizontal row, vertical column, ring
+   - Shapes: rectangle, oval, polygon
+   - Strokes: clean edges, fuzzy edges
+   - 1000 images per class for training
+   - For colors variant: assign each class a color with probability p ∈ {RAND, 90%, 99%, 100%}
+   - For minimal pairs: render same background params across all concept combinations
+   - Images saved as PNG at 256×256 (or model-appropriate resolution)
+
+B. MODELS TO IMPLEMENT:
+   - ResNet (pretrained on ImageNet)
+   - ViT from CLIP
+   - ResNet from CLIP
+   - ResNet (random init, finetune on classification)
+   - 4-layer CNN (random init, finetune on classification):
+     filters=(64,32,16,8), kernel=3, stride=2, batchnorm, ReLU
+
+C. PROBING CLASSIFIERS:
+   - Linear classifiers trained with Adam optimizer
+   - For predict: trained to map final encoder output → 18 class labels
+   - For has_concept: trained to detect atomic concepts (layout/shape/stroke)
+   - For pretrained models: train probe on frozen encoder outputs
+   - For from-scratch models: finetune entire model, then probe
+
+D. CONCEPT ABLATION:
+   - Implement INLP (Iterative Nullspace Linear Projection)
+   - Train binary classifiers to distinguish concept instances
+   - Project representations onto nullspace of classifier weight vectors
+   - Use 1 iteration of INLP (remove most salient direction)
+
+E. EVALUATION PROTOCOL:
+   - Seen vs unseen class splits (1 slice and N-1 slices)
+   - For is_grounded: accuracy on counterfactual minimal pairs
+   - For is_token_of_type: has_concept accuracy on unseen classes
+   - For is_modular: has_concept accuracy after ablation (ablated vs others)
+   - For is_causal: predict accuracy after ablation (ablated vs others)
+   - Layer-wise probing: per-layer probing accuracy + NMI analysis
+   - Multiple random seeds (results shown with variance over seeds)
+
+F. THRESHOLDS AND BASELINES:
+   - "High" accuracy threshold: >75%
+   - Random baselines: 33% for layout (3 values), 33% for shape (3 values),
+     50% for stroke (2 values), 5.6% for full class (18 classes)
+
+================================================================================
+7. CODE AND DATA AVAILABILITY
+================================================================================
+
+Paper states: "Our code, data, and results are available at: bit.ly/unit-concepts-drive"

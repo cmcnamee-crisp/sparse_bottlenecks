@@ -1,0 +1,34 @@
+# Data and artifacts
+**/data/
+**/checkpoints/
+**/results_sae/
+**/lightning_logs/
+**/venv*/
+**/log/
+**/out/
+**/outputs/
+**/times/
+**/*.npy
+**/*.ckpt
+**/*.zip
+**/*.png
+**/*.tsv
+**/*.csv
+!unit_tests/sae_summary.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

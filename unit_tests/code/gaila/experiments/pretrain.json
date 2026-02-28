@@ -1,0 +1,26 @@
+{
+    "script": "pretrain",
+    "use_gpu": true,
+    "settings": {
+        "dataspec": [
+            "classes"
+        ],
+        "pretrain_model": [
+            "RawCnn",
+            "RawRes"
+        ],
+        "n_epochs": [
+            100
+        ],
+        "seed": [
+           10
+        ],
+        "data_path": [
+            "default",
+            "colors_0.0556",
+            "colors_0.9",
+            "colors_0.99",
+            "colors_1.0"
+        ]
+    }
+}

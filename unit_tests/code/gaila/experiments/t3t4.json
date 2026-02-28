@@ -1,0 +1,37 @@
+{
+    "script": "t3t4",
+    "use_gpu": true,
+    "settings": {
+        "finetune_model": [
+            "linear"
+        ],
+        "pretrain_model": [
+            "ClipVit",
+            "ClipRes",
+            "OrigRes",
+            "RawRes",
+            "RawCnn"
+        ],
+        "seed": [
+            6,7,8,9,10
+        ],
+        "n_epochs": [
+            100
+        ],
+        "layout_inlp_or_holdout": [
+            "column"
+        ],
+        "shape_inlp_or_holdout": [
+            "oval"
+        ],
+        "stroke_inlp_or_holdout": [
+            "clean"
+        ],
+        "data_path": [
+            "default"
+        ],
+        "holdout_many": [
+            false, true
+        ]
+    }
+}

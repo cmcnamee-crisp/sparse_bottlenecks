@@ -1,0 +1,21 @@
+{
+    "script": "dataset_transform",
+    "use_gpu": true,
+    "settings": {
+        "data_path": [
+            "default",
+            "colors_0.0556",
+            "colors_0.9",
+            "colors_0.99",
+            "colors_1.0",
+            "t1",
+            "t1colors"
+        ],
+        "seed": [
+            6,7,8,9,10
+        ],
+        "layerwise": [
+            true
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "script": "dataset_t1",
+    "use_gpu": false,
+    "settings": {
+        "seed": [
+            6,7,8,9,10
+        ],
+        "colors": [
+            false
+        ]
+    }
+}
