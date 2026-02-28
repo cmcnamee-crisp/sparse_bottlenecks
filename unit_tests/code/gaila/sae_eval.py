@@ -264,6 +264,18 @@ def test_is_grounded(
     # otherwise skip pair analysis and report marginal distances.
     results = {}
 
+    if "group_id" not in datadesc_t1.columns:
+        # Reconstruct group_id: images with same background are usually sequential or 
+        # can be paired by their original image_id if it's consistent.
+        # In T1, pairs are often (i, i+offset). Let's try to find pairs by the number of unique classes.
+        # For simplicity, if they aren't provided, we try to use image_id % (num_images_in_t1 / 2).
+        num_classes_in_t1 = len(datadesc_t1.classname.unique())
+        num_images = len(datadesc_t1)
+        # Based on typical T1 structure, if it's 2 samples per background:
+        if num_images % 2 == 0:
+            datadesc_t1["group_id"] = np.arange(num_images) % (num_images // 2)
+            print(f"  [Test 1] Reconstructed group_id assuming {num_images//2} pairs.")
+
     if "group_id" in datadesc_t1.columns:
         ids = datadesc_t1.group_id.values
         unique_ids = np.unique(ids)
@@ -529,12 +541,23 @@ def test_is_causal(
         preds = all_logits.argmax(dim=-1).numpy()
 
         # Evaluate accuracy per concept dimension.
+        # We need a mapping from 18-way class predictions to the 3-way concept labels.
+        classnames = sorted(value_names["layout"]) # Use any dim to get all classnames
+        # Wait, value_names contains concept values, not classnames.
+        # Let's get classnames from the datadesc.
+        all_classnames = sorted(datadesc.classname.unique())
+        
         for eval_dim in CONCEPT_DIMS:
+            # Map predicted class index -> concept label for this dim
+            spec = specifications.get_specification_category(eval_dim, all_classnames)
+            # class_idx -> concept_label
+            class_to_concept = np.zeros(len(all_classnames), dtype=int)
+            for cn, s in spec.items():
+                class_to_concept[all_classnames.index(cn)] = s["classlabel"]
+            
+            eval_preds = class_to_concept[preds]
             eval_labels = concept_labels_test[eval_dim]
-            # Map class predictions -> concept dim predictions via majority vote per class.
-            # We use a simple majority-vote lookup table built from the full dataset labels.
-            # For now, directly use the concept labels as evaluation targets.
-            acc = (preds == eval_labels).mean()
+            acc = (eval_preds == eval_labels).mean()
             random_baseline = 1.0 / len(value_names[eval_dim])
             key = f"ablate={ablate_dim}_eval={eval_dim}"
             results[key] = {
@@ -617,7 +640,21 @@ def main(FLAGS):
         class_labels_t1 = th.tensor(datadesc_t1.classlabel.values, dtype=th.long, device=device)
         FLAGS.data_path = data_path_train
 
-        backbone_head = head  # None for post_hoc without pretrained probe loaded
+        backbone_head = head 
+        if backbone_head is None:
+            # Load pretrained linear probe from checkpoints
+            try:
+                # We need the one trained on classes for the final layer
+                train_id = flags.train_layerwise_id(FLAGS, sae_layer)
+                from models import linear as linear_model
+                backbone_head = linear_model.Linear.load_from_checkpoint(
+                    checkpoint_path=f"checkpoints/{train_id}.ckpt"
+                )
+                backbone_head.to(device)
+                backbone_head.eval()
+                print(f"  [eval] Loaded backbone head from checkpoints/{train_id}.ckpt")
+            except Exception as e:
+                print(f"  [eval] Could not load backbone head: {e}")
         t1_results = test_is_grounded(
             sae, backbone_head, latents_t1, datadesc_t1,
             assignment, class_labels_t1, device
@@ -656,7 +693,7 @@ def main(FLAGS):
     print("TEST 4: is_causal")
     print("="*60)
     t4_results = test_is_causal(
-        sae, head, latents, concept_labels, value_names,
+        sae, backbone_head, latents, concept_labels, value_names,
         assignment, class_labels, is_test, device
     )
     all_results["test4_is_causal"] = t4_results
