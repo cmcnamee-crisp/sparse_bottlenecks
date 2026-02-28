@@ -601,6 +601,27 @@ def main(FLAGS):
         datadesc, dataspec, is_test, is_unseen
     ) = _load_all_latents_and_labels(FLAGS, sae_layer, device)
 
+    # NEW: Load backbone head globally for all tests (especially Test 1 and Test 4)
+    backbone_head = head 
+    if backbone_head is None:
+        # Load pretrained linear probe from checkpoints
+        try:
+            # We need the one trained on classes for the final layer
+            # Note: if this fails, check if your --n_epochs or --samples_per_class 
+            # flags match the original backbone training run.
+            train_id = flags.train_layerwise_id(FLAGS, sae_layer)
+            ckpt_path_probe = f"checkpoints/{train_id}.ckpt"
+            from models import linear as linear_model
+            backbone_head = linear_model.Linear.load_from_checkpoint(
+                checkpoint_path=ckpt_path_probe
+            )
+            backbone_head.to(device)
+            backbone_head.eval()
+            print(f"  [eval] Loaded backbone head from {ckpt_path_probe}")
+        except Exception as e:
+            print(f"  [eval] Warning: Could not load backbone head from {ckpt_path_probe}: {e}")
+            print("         Test 4 (Causality) will be skipped.")
+
     # ------------------------------------------------------------------
     # Prerequisite: Concept Assignment
     # ------------------------------------------------------------------
@@ -640,21 +661,6 @@ def main(FLAGS):
         class_labels_t1 = th.tensor(datadesc_t1.classlabel.values, dtype=th.long, device=device)
         FLAGS.data_path = data_path_train
 
-        backbone_head = head 
-        if backbone_head is None:
-            # Load pretrained linear probe from checkpoints
-            try:
-                # We need the one trained on classes for the final layer
-                train_id = flags.train_layerwise_id(FLAGS, sae_layer)
-                from models import linear as linear_model
-                backbone_head = linear_model.Linear.load_from_checkpoint(
-                    checkpoint_path=f"checkpoints/{train_id}.ckpt"
-                )
-                backbone_head.to(device)
-                backbone_head.eval()
-                print(f"  [eval] Loaded backbone head from checkpoints/{train_id}.ckpt")
-            except Exception as e:
-                print(f"  [eval] Could not load backbone head: {e}")
         t1_results = test_is_grounded(
             sae, backbone_head, latents_t1, datadesc_t1,
             assignment, class_labels_t1, device
