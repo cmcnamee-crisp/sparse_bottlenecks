@@ -474,6 +474,7 @@ def test_is_causal(
     value_names: Dict[str, List[str]],
     assignment: Dict[str, int],
     class_labels: th.Tensor,
+    datadesc: pd.DataFrame,
     is_test: np.ndarray,
     device: str,
     batch_size: int = 512,
@@ -598,18 +599,30 @@ def main(FLAGS):
     if backbone_head is None:
         # Load pretrained linear probe from checkpoints
         try:
-            # We need the one trained on classes for the final layer
-            old_spec = FLAGS.dataspec
-            FLAGS.dataspec = "classes"
-            train_id = flags.train_layerwise_id(FLAGS, sae_layer)
-            from models import linear as linear_model
-            backbone_head = linear_model.Linear.load_from_checkpoint(
-                checkpoint_path=f"checkpoints/{train_id}.ckpt"
-            )
-            backbone_head.to(device)
-            backbone_head.eval()
-            print(f"  [eval] Loaded backbone head from checkpoints/{train_id}.ckpt")
-            FLAGS.dataspec = old_spec
+            import glob
+            # The linear probes are trained with finetune_model=linear and dataspec=classes.
+            # We search for a checkpoint that matches this seed, pretrain_model, and layer.
+            # E.g. train-*se:{FLAGS.seed}*-fi:li-pr:{FLAGS.pretrain_model}*-da:cl-{sae_layer}.ckpt
+            pattern = f"checkpoints/train-*se:{FLAGS.seed}*-fi:li*-pr:{FLAGS.pretrain_model[:2]}*-da:cl-{sae_layer}.ckpt"
+            # In flags.__dict_to_string, 'RawCnn' is not truncated, so we use FLAGS.pretrain_model directly,
+            # but flags shorten_if_str handles 'RawCnn' as 'RawCnn'. Let's ensure the pattern matches.
+            # The pattern looks like: train-ba:256-n_:100-se:6-fi:li-pr:RawCnn-sa:1000-da:de-da:cl-conv_layer0.ckpt
+            pattern = f"checkpoints/train-*se:{FLAGS.seed}-fi:li-pr:{FLAGS.pretrain_model}*-da:cl-{sae_layer}.ckpt"
+            
+            matches = glob.glob(pattern)
+            
+            if matches:
+                checkpoint_path = matches[0]
+                from models import linear as linear_model
+                backbone_head = linear_model.Linear.load_from_checkpoint(
+                    checkpoint_path=checkpoint_path
+                )
+                backbone_head.to(device)
+                backbone_head.eval()
+                print(f"  [eval] Loaded backbone head from {checkpoint_path}")
+            else:
+                print(f"  [eval] Could not find backbone head matching pattern: {pattern}")
+                
         except Exception as e:
             print(f"  [eval] Could not load backbone head: {e}")
 
@@ -698,7 +711,7 @@ def main(FLAGS):
     print("="*60)
     t4_results = test_is_causal(
         sae, backbone_head, latents, concept_labels, value_names,
-        assignment, class_labels, is_test, device
+        assignment, class_labels, datadesc, is_test, device
     )
     all_results["test4_is_causal"] = t4_results
 
