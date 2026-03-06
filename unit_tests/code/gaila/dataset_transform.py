@@ -553,11 +553,16 @@ def get_vit_activations(self, x):
 
 
 def _format_layer(x: th.tensor) -> th.tensor:
-    """This means across the channels dimension. In the future we could think
-    about handling this in a different way.
+    """Flatten each image's activation to a single image-level feature vector.
+
+    (N, C, H, W) -> (N, C * H * W)
+
+    Each spatial position and channel is preserved as a separate dimension,
+    giving the SAE access to the full feature content. No channel averaging.
+    For conv layers this produces large vectors (e.g. 96,800 at layer1) that
+    the SAE must be sized appropriately to handle.
     """
     if x.ndim > 2:
-        x = th.mean(x, dim=1)
         x = th.flatten(x, 1)
     return x.to("cpu")
 

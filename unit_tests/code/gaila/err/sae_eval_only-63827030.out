@@ -1,0 +1,640 @@
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument
+usage: sae_eval.py [-h] [--batch_size BATCH_SIZE] [--n_epochs N_EPOCHS] --seed
+                   SEED [--finetune_model FINETUNE_MODEL]
+                   [--pretrain_model PRETRAIN_MODEL]
+                   [--samples_per_class SAMPLES_PER_CLASS]
+                   [--layout_inlp_or_holdout LAYOUT_INLP_OR_HOLDOUT]
+                   [--shape_inlp_or_holdout SHAPE_INLP_OR_HOLDOUT]
+                   [--stroke_inlp_or_holdout STROKE_INLP_OR_HOLDOUT]
+                   [--data_path DATA_PATH] [--holdout_many HOLDOUT_MANY]
+                   [--dataspec DATASPEC] --jobname JOBNAME
+                   [--dataspec_analysis DATASPEC_ANALYSIS]
+                   [--datadesc DATADESC] --sae_mode {post_hoc,integrated}
+                   [--sae_arch {standard,gated,topk}] --sae_layer SAE_LAYER
+                   [--sae_num_features SAE_NUM_FEATURES]
+                   [--sae_l1_coeff SAE_L1_COEFF] [--sae_topk_k SAE_TOPK_K]
+                   [--sae_lr SAE_LR]
+sae_eval.py: error: argument --layout_inlp_or_holdout: expected one argument

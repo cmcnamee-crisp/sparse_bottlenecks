@@ -47,6 +47,12 @@ from torch.utils.data import DataLoader, TensorDataset
 import pytorch_lightning as pl
 from pytorch_lightning import seed_everything
 
+try:
+    import wandb
+    HAS_WANDB = True
+except ImportError:
+    HAS_WANDB = False
+
 import flags
 import helpers
 import specifications
@@ -90,8 +96,11 @@ def load_latents(FLAGS, layer: str, device: str):
     datadesc, dataspec = helpers.load_info(FLAGS)
 
     dataset_path = flags.transformed_id(FLAGS)
-    img = helpers._get_vector_layer(dataset_path, device, layer, "avg")
+    # Latents are saved as (N, C*H*W) flattened vectors by _format_layer.
+    img = helpers._get_vector_layer(dataset_path, device, layer)
+    
     labels = th.tensor(datadesc.classlabel.values, dtype=th.long, device=device)
+        
     return img, labels, datadesc, dataspec
 
 
@@ -167,6 +176,13 @@ def train_post_hoc(FLAGS, device: str):
                 f"mse={total_mse/n_batches:.4f} | "
                 f"reg={total_l1/n_batches:.4f}"
             )
+        if HAS_WANDB:
+            wandb.log({
+                "epoch": epoch + 1,
+                "loss": total_loss / n_batches,
+                "mse": total_mse / n_batches,
+                "reg": total_l1 / n_batches,
+            })
 
     return sae, latent_dim
 
@@ -178,61 +194,97 @@ def train_post_hoc(FLAGS, device: str):
 def train_integrated(FLAGS, device: str):
     """Train SAE inserted into backbone forward pass end-to-end.
 
-    The head and SAE are trained jointly. Loss: CrossEntropy + SAE reg.
+    The backbone and SAE are trained jointly. Loss: CrossEntropy + SAE reg.
     No reconstruction term: the classification objective alone shapes the
     sparse bottleneck.
     """
-    print(f"[integrated] Loading backbone model ...")
-    backbone = helpers.get_ft_model(FLAGS, device)
+    print(f"[integrated] Initializing new backbone model ...")
+    from models import cnn
+    
+    FLAGS.dataspec = "classes"
+    datadesc, dataspec = helpers.load_info(FLAGS)
+    num_classes = len(datadesc.classlabel.unique())
+    
+    backbone = cnn.CNN(num_classes=num_classes).to(device)
     backbone.train()
 
-    # We need to split the CNN at the requested layer.
-    # For now, we work at the final 'fc' layer (latent_dim=512).
-    # Latents are pre-computed for efficiency; we attach the SAE in latent space.
-    print(f"[integrated] Loading latents from layer={FLAGS.sae_layer} ...")
-    latents, labels, datadesc, dataspec = load_latents(FLAGS, FLAGS.sae_layer, device)
-    latent_dim = latents.shape[1]
-    print(f"[integrated] Latent dim={latent_dim}, num samples={len(latents)}")
+    # Cache the preprocessed image dataset so we only load PNGs once per seed.
+    cache_dir = "data/cache"
+    os.makedirs(cache_dir, exist_ok=True)
+    cache_path = f"{cache_dir}/integrated_{FLAGS.data_path}_{FLAGS.seed}.pt"
 
-    holdout_mask = datadesc.classname.map(
-        {cn: not spec["holdout"] for cn, spec in dataspec.items()}
-    ).values
-    train_mask = (datadesc.test == False).values & holdout_mask
+    if os.path.exists(cache_path):
+        print(f"[integrated] Loading cached dataset from {cache_path}")
+        cached = th.load(cache_path)
+        train_images = cached["train_images"]
+        train_labels = cached["train_labels"]
+    else:
+        print(f"[integrated] Loading image dataset (will cache for reuse) ...")
+        datamodule = helpers.get_image_datamodule(
+            FLAGS.data_path, datadesc, dataspec, FLAGS.batch_size, device,
+        )
+        datamodule.setup(stage="fit")
+        # Collect all training data into tensors for caching.
+        all_imgs, all_labels = [], []
+        for batch in datamodule.train_dataloader():
+            imgs, labels = batch
+            all_imgs.append(imgs)
+            all_labels.append(labels)
+        train_images = th.cat(all_imgs)
+        train_labels = th.cat(all_labels)
+        th.save({"train_images": train_images, "train_labels": train_labels}, cache_path)
+        print(f"[integrated] Cached dataset to {cache_path}")
 
-    latents_train = latents[train_mask]
-    labels_train = labels[train_mask]
-    num_classes = int(labels_train.max().item()) + 1
+    dataset = th.utils.data.TensorDataset(train_images, train_labels)
+    loader = th.utils.data.DataLoader(dataset, batch_size=FLAGS.batch_size, shuffle=True)
+    
+    # We need to compute the latent dimension dynamically.
+    dummy_input = th.zeros(1, 3, 224, 224).to(device)
+    with th.no_grad():
+        dummy_z = backbone.forward_to_layer(dummy_input, FLAGS.sae_layer)
+        latent_dim = dummy_z.flatten(1).shape[1]
 
-    dataset = TensorDataset(latents_train, labels_train)
-    loader = DataLoader(dataset, batch_size=FLAGS.batch_size, shuffle=True, drop_last=False)
+    print(f"[integrated] Instantiating SAE at layer={FLAGS.sae_layer} with latent dim={latent_dim}")
 
     sae = build_sae_from_flags(FLAGS, latent_dim).to(device)
-    # Add a small classification head on top of the SAE output.
-    head = nn.Linear(latent_dim, num_classes).to(device)
 
     optimizer = optim.Adam(
-        list(sae.parameters()) + list(head.parameters()), lr=FLAGS.sae_lr
+        list(sae.parameters()) + list(backbone.parameters()), lr=FLAGS.sae_lr
     )
 
     for epoch in range(FLAGS.n_epochs):
         sae.train()
-        head.train()
+        backbone.train()
         total_loss = 0.0
         total_xe = 0.0
         total_reg = 0.0
         total_correct = 0
         total_n = 0
 
-        for z_batch, y_batch in loader:
+        for batch in loader:
+            x_batch, y_batch = batch
+            x_batch = x_batch.to(device)
+            y_batch = y_batch.to(device)
             optimizer.zero_grad()
-            # Forward: z -> SAE bottleneck -> z_hat -> classify
-            z_hat, activations, loss_dict = sae(z_batch.float())
-            logits = head(z_hat)
+            
+            # Forward path (all on GPU, gradients flow end-to-end):
+            # 1. Image -> Backbone up to sae_layer
+            z = backbone.forward_to_layer(x_batch, FLAGS.sae_layer)
+            # Flatten for SAE (conv layers are 4D; fc is already 2D).
+            z_flat = z.flatten(1)
+            
+            # 2. Latent -> SAE Bottleneck -> Reconstructed Latent (z_hat)
+            z_hat, activations, loss_dict = sae(z_flat.float())
+            
+            # 3. Reconstructed Latent -> Rest of Backbone -> Logits
+            logits = backbone.forward_from_layer(z_hat, FLAGS.sae_layer)
+            
             xe = nn.functional.cross_entropy(logits, y_batch)
             reg = sum(loss_dict.values()) if loss_dict else th.tensor(0.0, device=device)
             loss = xe + reg
             loss.backward()
             optimizer.step()
+            
             if hasattr(sae, "normalize_decoder"):
                 sae.normalize_decoder()
             total_loss += loss.item()
@@ -252,15 +304,23 @@ def train_integrated(FLAGS, device: str):
                 f"reg={total_reg/n_batches:.4f} | "
                 f"acc={acc:.3f}"
             )
+        if HAS_WANDB:
+            wandb.log({
+                "epoch": epoch + 1,
+                "loss": total_loss / n_batches,
+                "xe": total_xe / n_batches,
+                "reg": total_reg / n_batches,
+                "train_acc": acc,
+            })
 
-    return sae, head, latent_dim
+    return sae, backbone, latent_dim
 
 
 # ---------------------------------------------------------------------------
 # Checkpoint helpers
 # ---------------------------------------------------------------------------
 
-def save_checkpoint(path: str, sae, latent_dim: int, FLAGS, head=None):
+def save_checkpoint(path: str, sae, latent_dim: int, FLAGS, backbone_model=None):
     payload = {
         "sae_state_dict": sae.state_dict(),
         "sae_arch": FLAGS.sae_arch,
@@ -271,9 +331,8 @@ def save_checkpoint(path: str, sae, latent_dim: int, FLAGS, head=None):
         "sae_topk_k": getattr(FLAGS, "sae_topk_k", None),
         "sae_l1_coeff": getattr(FLAGS, "sae_l1_coeff", None),
     }
-    if head is not None:
-        payload["head_state_dict"] = head.state_dict()
-        payload["head_out_features"] = head.out_features
+    if backbone_model is not None:
+        payload["backbone_state_dict"] = backbone_model.state_dict()
     th.save(payload, path)
     print(f"Saved SAE checkpoint to {path}")
 
@@ -299,14 +358,17 @@ def load_checkpoint(path: str, device: str):
     sae.to(device)
     sae.eval()
 
-    head = None
-    if "head_state_dict" in payload:
-        head = nn.Linear(payload["latent_dim"], payload["head_out_features"])
-        head.load_state_dict(payload["head_state_dict"])
-        head.to(device)
-        head.eval()
+    backbone_model = None
+    if "backbone_state_dict" in payload:
+        from models import cnn
+        # Infer num_classes from the saved classifier weight shape.
+        num_classes = payload["backbone_state_dict"]["ff_head.weight"].shape[0]
+        backbone_model = cnn.CNN(num_classes=num_classes)
+        backbone_model.load_state_dict(payload["backbone_state_dict"])
+        backbone_model.to(device)
+        backbone_model.eval()
 
-    return sae, head, payload
+    return sae, backbone_model, payload
 
 
 # ---------------------------------------------------------------------------
@@ -342,12 +404,24 @@ def main(FLAGS):
     sid = sae_id(FLAGS)
     ckpt_path = f"sae_checkpoints/{sid}.pt"
 
+    # Initialize wandb for cluster monitoring.
+    if HAS_WANDB:
+        wandb.init(
+            project="sae-unit-tests",
+            name=sid,
+            config=vars(FLAGS),
+            reinit=True,
+        )
+
     if FLAGS.sae_mode == "post_hoc":
         sae, latent_dim = train_post_hoc(FLAGS, device)
-        save_checkpoint(ckpt_path, sae, latent_dim, FLAGS, head=None)
+        save_checkpoint(ckpt_path, sae, latent_dim, FLAGS, backbone_model=None)
     elif FLAGS.sae_mode == "integrated":
-        sae, head, latent_dim = train_integrated(FLAGS, device)
-        save_checkpoint(ckpt_path, sae, latent_dim, FLAGS, head=head)
+        sae, backbone, latent_dim = train_integrated(FLAGS, device)
+        save_checkpoint(ckpt_path, sae, latent_dim, FLAGS, backbone_model=backbone)
+
+    if HAS_WANDB:
+        wandb.finish()
 
 
 if __name__ == "__main__":

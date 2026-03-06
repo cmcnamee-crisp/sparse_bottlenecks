@@ -53,7 +53,13 @@ def aggregate_results(results_dir):
         f1_seen_vals = [v.get("f1_seen", 0) for v in assignment.values()]
         avg_f1_seen = sum(f1_seen_vals) / len(f1_seen_vals) if f1_seen_vals else 0
         
-        # 2. Test 2 (Unseen F1)
+        # 2. Test 1 (Groundedness / Distances)
+        test1 = data.get("test1_is_grounded", {})
+        mean_total_dist = test1.get("mean_total_sparse_code_dist", 0.0)
+        mean_concept_dist = test1.get("mean_concept_neuron_dist", 0.0)
+        background_fraction = test1.get("background_fraction", 0.0)
+        
+        # 3. Test 2 (Unseen F1)
         test2 = data.get("test2_is_token_of_type", {})
         f1_unseen_vals = [v.get("f1_unseen", 0) for v in test2.values() if isinstance(v, dict)]
         avg_f1_unseen = sum(f1_unseen_vals) / len(f1_unseen_vals) if f1_unseen_vals else 0
@@ -72,14 +78,42 @@ def aggregate_results(results_dir):
         denom = (abs(avg_delta_on) + abs(avg_delta_off) + avg_delta_other)
         modularity_ratio = (avg_delta_on - avg_delta_off) / denom if denom > 1e-9 else 0
 
+        # 4. Test 4 (Causality)
+        test4 = data.get("test4_is_causal", {})
+        t4_ablated_accs = []
+        t4_others_accs = []
+        for key, val in test4.items():
+            if not isinstance(val, dict):
+                continue
+            acc = val.get("accuracy", None)
+            if acc is None:
+                continue
+            if val.get("is_ablated_dim", False):
+                t4_ablated_accs.append(acc)
+            else:
+                t4_others_accs.append(acc)
+        t4_ablated_acc = sum(t4_ablated_accs) / len(t4_ablated_accs) if t4_ablated_accs else None
+        t4_others_acc = sum(t4_others_accs) / len(t4_others_accs) if t4_others_accs else None
+        t4_causal_gap = (t4_others_acc - t4_ablated_acc) if (t4_others_acc is not None and t4_ablated_acc is not None) else None
+
+        # Test 1 z_hat classification accuracy
+        t1_zhat_acc = test1.get("classify_accuracy_with_zhat", None)
+
         row = {
             **meta,
             "avg_f1_seen": avg_f1_seen,
+            "mean_total_sparse_code_dist": mean_total_dist,
+            "mean_concept_neuron_dist": mean_concept_dist,
+            "background_fraction": background_fraction,
+            "t1_zhat_accuracy": t1_zhat_acc,
             "avg_f1_unseen": avg_f1_unseen,
             "avg_delta_on": avg_delta_on,
             "avg_delta_off": avg_delta_off,
             "avg_delta_other": avg_delta_other,
             "modularity_ratio": modularity_ratio,
+            "t4_ablated_acc": t4_ablated_acc,
+            "t4_others_acc": t4_others_acc,
+            "t4_causal_gap": t4_causal_gap,
         }
         all_data.append(row)
         
@@ -95,7 +129,7 @@ if __name__ == "__main__":
         sort_cols = [c for c in ["arch", "layer", "seed"] if c in output_df.columns]
         output_df = output_df.sort_values(by=sort_cols)
         
-        output_path = "sae_summary.csv"
+        output_path = "/Users/cameronmcnamee/Desktop/sparse_bottlenecks/unit_tests/sae_summary.csv"
         output_df.to_csv(output_path, index=False)
         print(f"Summary saved to {output_path}")
         

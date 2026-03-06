@@ -1,0 +1,612 @@
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 592, in main
+    sae, head, payload = load_checkpoint(ckpt_path, device)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py", line 341, in load_checkpoint
+    num_classes = payload["backbone_state_dict"]["classifier.weight"].shape[0]
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'classifier.weight'
+/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_train.py:321: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  payload = th.load(path, map_location=device)
+/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/lightning_fabric/utilities/cloud_io.py:73: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+Traceback (most recent call last):
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 716, in <module>
+    main(FLAGS)
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 674, in main
+    t2_results = test_is_token_of_type(
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/net/holy-nfsisilon/ifs/rc_labs/ba_lab/Everyone/cmcnamee/sparse_bottlenecks/unit_tests/code/gaila/sae_eval.py", line 364, in test_is_token_of_type
+    f1 = f1_score(y_true, y_pred, zero_division=0)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1565, in f1_score
+    return fbeta_score(
+           ^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1785, in fbeta_score
+    _, _, f, _ = precision_recall_fscore_support(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/utils/_param_validation.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 2100, in precision_recall_fscore_support
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 1864, in _check_set_wise_labels
+    y_type, y_true, y_pred, _ = _check_targets(y_true, y_pred)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/ba_lab/Everyone/cmcnamee/conda/envs/sparse_bottlenecks/lib/python3.12/site-packages/sklearn/metrics/_classification.py", line 113, in _check_targets
+    raise ValueError(
+ValueError: Found empty input array (e.g., `y_true` or `y_pred`) while a minimum of 1 sample is required.

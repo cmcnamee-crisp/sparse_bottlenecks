@@ -452,14 +452,18 @@ def _get_image(filename: str) -> th.tensor:
 
 
 def _get_vector_layer(
-    filename: str, device: str, layer: str, flatten: str
+    filename: str, device: str, layer: str
 ) -> th.tensor:
-    assert flatten == "avg"
+    """Load pre-computed layer activations from disk.
+
+    All saved .npy files are (N, C*H*W) flat tensors produced by
+    _format_layer in dataset_transform.py.
+    """
     filename = filename.replace(".png", "") + "_" + layer + ".npy"
     img = np.load(filename)
     img = th.tensor(img, device=device)
     if img.ndim > 2:
-        img = th.mean(img, dim=1)
+        # Safety fallback for any legacy 3D/4D .npy files.
         img = th.flatten(img, 1)
     return img
 

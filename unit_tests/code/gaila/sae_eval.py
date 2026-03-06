@@ -66,6 +66,29 @@ os.makedirs("results_sae", exist_ok=True)
 
 CONCEPT_DIMS = ["layout", "shape", "stroke"]
 
+# Baseline configuration
+N_BASELINE_PERMUTATIONS = 100   # For F1 permutation test (cheap: numpy only)
+N_BASELINE_RANDOM_SAMPLES = 100 # For random neuron baselines (cheap: numpy only)
+N_BASELINE_CAUSAL_SAMPLES = 20  # For Test 4 random ablation (expensive: decode + forward)
+ACTIVATION_EPSILON = 1e-3       # Activations below this are zeroed for distance metrics
+
+
+def _fast_f1_all_neurons(y_true: np.ndarray, A_binary: np.ndarray) -> np.ndarray:
+    """Vectorized F1 for all neurons at once.
+
+    Args:
+        y_true: (N,) binary int array for one concept value.
+        A_binary: (N, num_features) binary activation matrix.
+
+    Returns:
+        (num_features,) F1 score per neuron.
+    """
+    y = y_true[:, None].astype(float)
+    tp = (y * A_binary).sum(axis=0)
+    fp = ((1 - y) * A_binary).sum(axis=0)
+    fn = (y * (1 - A_binary)).sum(axis=0)
+    denom = 2 * tp + fp + fn
+    return np.where(denom > 0, 2 * tp / denom, 0.0)
 
 def _get_concept_labels(datadesc: pd.DataFrame, FLAGS) -> Dict[str, np.ndarray]:
     """Return dict mapping concept_name -> integer label array (one per sample)."""
@@ -105,7 +128,7 @@ def _load_all_latents_and_labels(FLAGS, layer: str, device: str):
     datadesc, dataspec = helpers.load_info(FLAGS)
     dataset_path = flags.transformed_id(FLAGS)
 
-    latents = helpers._get_vector_layer(dataset_path, device, layer, "avg")
+    latents = helpers._get_vector_layer(dataset_path, device, layer)
     class_labels = th.tensor(datadesc.classlabel.values, dtype=th.long, device=device)
     concept_labels = _get_concept_labels(datadesc, FLAGS)  # each is np.ndarray
     value_names = _get_concept_value_names(datadesc, FLAGS)
@@ -177,10 +200,7 @@ def compute_concept_assignment(
             y_true = (labels_arr == v_idx).astype(int)
             concept_key = f"{dim}:{value_names[dim][v_idx]}"
             concept_keys.append(concept_key)
-            f1_arr = np.array([
-                f1_score(y_true, A_binary[:, j], zero_division=0)
-                for j in range(num_features)
-            ])
+            f1_arr = _fast_f1_all_neurons(y_true, A_binary)
             f1_table[concept_key] = f1_arr
 
     print("[Prerequisite] F1 table computed.")
@@ -194,6 +214,25 @@ def compute_concept_assignment(
         assignment[ck] = best_neuron
         f1_scores[ck] = float(f1_arr[best_neuron])
         print(f"  {ck:30s} -> neuron {best_neuron:4d}  (F1={f1_arr[best_neuron]:.4f})")
+
+    # Permutation baseline: shuffle concept labels, recompute max-F1.
+    print(f"[Prerequisite] Permutation baseline ({N_BASELINE_PERMUTATIONS} perms) ...")
+    null_max_f1 = {ck: [] for ck in concept_keys}
+    for _perm in range(N_BASELINE_PERMUTATIONS):
+        for dim, labels_arr in concept_labels.items():
+            shuffled = np.random.permutation(labels_arr)
+            for v_idx in range(len(value_names[dim])):
+                y_perm = (shuffled == v_idx).astype(int)
+                ck = f"{dim}:{value_names[dim][v_idx]}"
+                f1_perm = _fast_f1_all_neurons(y_perm, A_binary)
+                null_max_f1[ck].append(float(f1_perm.max()))
+
+    baseline_f1 = {}
+    for ck in concept_keys:
+        nm = float(np.mean(null_max_f1[ck]))
+        ns = float(np.std(null_max_f1[ck]))
+        baseline_f1[ck] = {"null_mean": nm, "null_std": ns}
+        print(f"  {ck:30s} | real={f1_scores[ck]:.4f} | null={nm:.4f}±{ns:.4f}")
 
     # Build bipartite graph for downstream analysis.
     edges = []
@@ -213,6 +252,7 @@ def compute_concept_assignment(
         "edges": edges,
         "assignment": assignment,
         "f1_scores": f1_scores,
+        "baseline_f1": baseline_f1,
     }
     return assignment, f1_scores, graph
 
@@ -223,7 +263,8 @@ def compute_concept_assignment(
 
 def test_is_grounded(
     sae,
-    backbone_head,  # nn.Linear or None (for post-hoc, we use pre-trained linear probe)
+    backbone,  # The full CNN model used to predict the final logits.
+    sae_layer: str,
     latents_t1: th.Tensor,
     datadesc_t1: pd.DataFrame,
     assignment: Dict[str, int],
@@ -256,6 +297,12 @@ def test_is_grounded(
     A = np.vstack(all_acts)
     Z_hat = th.cat(all_z_hat, dim=0)
 
+    # Zero out near-zero activations to prevent many tiny values
+    # from aggregating into misleading distance measures.
+    A[np.abs(A) < ACTIVATION_EPSILON] = 0.0
+    print(f"  [Test 1] Applied epsilon={ACTIVATION_EPSILON} threshold; "
+          f"sparsity={100 * (A == 0).mean():.1f}%")
+
     concept_neuron_indices = sorted(set(assignment.values()))
 
     # Counterfactual pairs: group by background_id if available, otherwise
@@ -279,34 +326,54 @@ def test_is_grounded(
     if "group_id" in datadesc_t1.columns:
         ids = datadesc_t1.group_id.values
         unique_ids = np.unique(ids)
-        total_dists, concept_dists = [], []
+        # Pre-compute all pair diffs for efficient baseline computation.
+        all_pair_diffs = []
         for gid in unique_ids:
             idx_in_group = np.where(ids == gid)[0]
             if len(idx_in_group) < 2:
                 continue
-            A_group = A[idx_in_group]  # (k, num_features)
+            A_group = A[idx_in_group]
             for i in range(len(A_group)):
                 for j in range(i + 1, len(A_group)):
-                    diff = np.abs(A_group[i] - A_group[j])
-                    total_dists.append(diff.sum())
-                    concept_dists.append(diff[concept_neuron_indices].sum())
-        mean_total = float(np.mean(total_dists)) if total_dists else float("nan")
-        mean_concept = float(np.mean(concept_dists)) if concept_dists else float("nan")
-        results["mean_total_sparse_code_dist"] = mean_total
-        results["mean_concept_neuron_dist"] = mean_concept
-        results["mean_background_dist"] = mean_total - mean_concept
-        if mean_total > 0:
-            results["background_fraction"] = (mean_total - mean_concept) / mean_total
+                    all_pair_diffs.append(np.abs(A_group[i] - A_group[j]))
+
+        if all_pair_diffs:
+            all_pair_diffs = np.stack(all_pair_diffs)  # (num_pairs, num_features)
+            total_dists = all_pair_diffs.sum(axis=1)
+            concept_dists = all_pair_diffs[:, concept_neuron_indices].sum(axis=1)
+
+            mean_total = float(total_dists.mean())
+            mean_concept = float(concept_dists.mean())
+            results["mean_total_sparse_code_dist"] = mean_total
+            results["mean_concept_neuron_dist"] = mean_concept
+            results["mean_background_dist"] = mean_total - mean_concept
+            if mean_total > 0:
+                results["concept_neuron_fraction"] = mean_concept / mean_total
+                results["background_fraction"] = (mean_total - mean_concept) / mean_total
+
+            # Random neuron baseline: sample random subsets of same size.
+            n_concept = len(concept_neuron_indices)
+            rand_fracs = []
+            for _ in range(N_BASELINE_RANDOM_SAMPLES):
+                rand_idx = np.random.choice(A.shape[1], size=n_concept, replace=False)
+                rand_dists = all_pair_diffs[:, rand_idx].sum(axis=1)
+                rand_fracs.append(float(rand_dists.mean() / mean_total) if mean_total > 0 else 0.0)
+            results["baseline_random_neuron_frac_mean"] = float(np.mean(rand_fracs))
+            results["baseline_random_neuron_frac_std"] = float(np.std(rand_fracs))
+            print(f"  [Test 1] Concept neuron fraction: {results.get('concept_neuron_fraction', 'N/A'):.4f}")
+            print(f"  [Test 1] Random baseline fraction: {results['baseline_random_neuron_frac_mean']:.4f} ± {results['baseline_random_neuron_frac_std']:.4f}")
+        else:
+            results["note"] = "no valid pairs found"
     else:
         # No pair ids available; report marginal activation stats instead.
         results["note"] = "no group_id column; skipping pairwise analysis"
         results["mean_activation_l2"] = float(np.mean(np.linalg.norm(A, axis=1)))
 
     # Classification accuracy using z_hat (reconstucted latents).
-    if backbone_head is not None:
-        backbone_head.eval()
+    if backbone is not None:
+        backbone.eval()
         with th.no_grad():
-            logits = backbone_head(Z_hat.to(device))
+            logits = backbone.forward_from_layer(Z_hat.to(device), sae_layer)
         preds = logits.argmax(dim=-1).cpu()
         labels_cpu = class_labels_t1.cpu()
         acc = (preds == labels_cpu).float().mean().item()
@@ -459,6 +526,51 @@ def test_is_modular(
                     f"other (abs): {delta_other:.4f}"
                 )
 
+    # Random neuron assignment baseline.
+    # Precompute deltas between concept-value group means (reusable across random samples).
+    concept_deltas = {}
+    for dim in CONCEPT_DIMS:
+        labels_arr = concept_labels[dim]
+        for v_from_idx, v_from in enumerate(value_names[dim]):
+            for v_to_idx, v_to in enumerate(value_names[dim]):
+                if v_from_idx == v_to_idx:
+                    continue
+                mask_from = labels_arr == v_from_idx
+                mask_to = labels_arr == v_to_idx
+                if mask_from.any() and mask_to.any():
+                    concept_deltas[(dim, v_from, v_to)] = A[mask_to].mean(0) - A[mask_from].mean(0)
+
+    n_assigned = len(assignment)
+    all_neurons = A.shape[1]
+    rand_on, rand_off, rand_other = [], [], []
+
+    for _ in range(N_BASELINE_RANDOM_SAMPLES):
+        rand_neurons = np.random.choice(all_neurons, size=n_assigned, replace=False)
+        rand_assign = {ck: int(rand_neurons[i]) for i, ck in enumerate(assignment.keys())}
+
+        for dim in CONCEPT_DIMS:
+            rd_neurons = {vn: rand_assign[f"{dim}:{vn}"] for vn in value_names[dim]}
+            rd_other = [rand_assign[f"{d}:{vn}"] for d in CONCEPT_DIMS if d != dim for vn in value_names[d]]
+            for v_from in value_names[dim]:
+                for v_to in value_names[dim]:
+                    if v_from == v_to:
+                        continue
+                    key = (dim, v_from, v_to)
+                    if key not in concept_deltas:
+                        continue
+                    delta = concept_deltas[key]
+                    rand_off.append(delta[rd_neurons[v_from]])
+                    rand_on.append(delta[rd_neurons[v_to]])
+                    rand_other.append(np.mean(np.abs(delta[rd_other])))
+
+    results["baseline_random_delta_on"] = float(np.mean(rand_on))
+    results["baseline_random_delta_off"] = float(np.mean(rand_off))
+    results["baseline_random_delta_other_abs"] = float(np.mean(rand_other))
+    print(
+        f"  [Test 3 Baseline] Random neurons: on={results['baseline_random_delta_on']:+.4f}, "
+        f"off={results['baseline_random_delta_off']:+.4f}, other={results['baseline_random_delta_other_abs']:.4f}"
+    )
+
     return results
 
 
@@ -468,7 +580,8 @@ def test_is_modular(
 
 def test_is_causal(
     sae,
-    backbone_head: Optional[nn.Module],
+    backbone: Optional[nn.Module],
+    sae_layer: str,
     latents: th.Tensor,
     concept_labels: Dict[str, np.ndarray],
     value_names: Dict[str, List[str]],
@@ -486,16 +599,16 @@ def test_is_causal(
       (a) Accuracy on the ablated concept (should -> random).
       (b) Accuracy on all other concept dimensions (should remain high).
 
-    backbone_head : the linear classification head (post-hoc: pretrained probe;
-                    integrated: the SAE head).  If None, we skip class-level eval.
+    backbone : the original CNN model (post-hoc: frozen;
+               integrated: jointly trained). If None, we skip class-level eval.
     """
-    if backbone_head is None:
-        print("[Test 4] No classification head available; skipping.")
+    if backbone is None:
+        print("[Test 4] No backbone available; skipping.")
         return {}
 
     print("[Test 4] Computing full-dataset activations ...")
     sae.eval()
-    backbone_head.eval()
+    backbone.eval()
 
     test_mask = is_test
     latents_test = latents[test_mask]
@@ -512,51 +625,40 @@ def test_is_causal(
 
     results = {}
 
-    # For each concept dimension, ablate and evaluate.
+    # Precompute class-to-concept maps (reused for real + baseline).
+    all_classnames = sorted(datadesc.classname.unique())
+    class_to_concept_maps = {}
+    for dim in CONCEPT_DIMS:
+        spec = specifications.get_specification_category(dim, all_classnames)
+        mapping = np.zeros(len(all_classnames), dtype=int)
+        for cn, s in spec.items():
+            mapping[all_classnames.index(cn)] = s["classlabel"]
+        class_to_concept_maps[dim] = mapping
+
+    def _ablate_and_predict(A_in, neurons_to_zero):
+        """Zero specified neurons, decode, forward through backbone → class preds."""
+        A_mod = A_in.clone()
+        A_mod[:, neurons_to_zero] = 0.0
+        with th.no_grad():
+            z_chunks = []
+            for i in range(0, len(A_mod), batch_size):
+                z_chunks.append(sae.decode(A_mod[i:i+batch_size].float().to(device)).cpu())
+            Z_hat = th.cat(z_chunks, dim=0)
+            l_chunks = []
+            for i in range(0, len(Z_hat), batch_size):
+                l_chunks.append(backbone.forward_from_layer(
+                    Z_hat[i:i+batch_size].float().to(device), sae_layer).cpu())
+        return th.cat(l_chunks, dim=0).argmax(dim=-1).numpy()
+
+    # Real concept-neuron ablation.
     for ablate_dim in CONCEPT_DIMS:
         ablate_neurons = [
             assignment[f"{ablate_dim}:{vname}"] for vname in value_names[ablate_dim]
         ]
+        preds = _ablate_and_predict(A_test, ablate_neurons)
 
-        # Surgical ablation: zero only the assigned neurons for this dim.
-        A_ablated = A_test.clone()
-        A_ablated[:, ablate_neurons] = 0.0
-
-        # Reconstruct and predict.
-        preds_ablated_dim = {}  # dim -> predicted labels
-        with th.no_grad():
-            z_hat_chunks = []
-            for i in range(0, len(A_ablated), batch_size):
-                a_batch = A_ablated[i : i + batch_size].float().to(device)
-                z_hat = sae.decode(a_batch)
-                z_hat_chunks.append(z_hat.cpu())
-            Z_hat_all = th.cat(z_hat_chunks, dim=0)
-
-            logits_chunks = []
-            for i in range(0, len(Z_hat_all), batch_size):
-                z_chunk = Z_hat_all[i : i + batch_size].float().to(device)
-                logits = backbone_head(z_chunk)
-                logits_chunks.append(logits.cpu())
-            all_logits = th.cat(logits_chunks, dim=0)
-
-        preds = all_logits.argmax(dim=-1).numpy()
-
-        # Evaluate accuracy per concept dimension.
-        # We need a mapping from 18-way class predictions to the 3-way concept labels.
-        classnames = sorted(value_names["layout"]) # Use any dim to get all classnames
-        # Wait, value_names contains concept values, not classnames.
-        # Let's get classnames from the datadesc.
-        all_classnames = sorted(datadesc.classname.unique())
-        
         for eval_dim in CONCEPT_DIMS:
-            # Map predicted class index -> concept label for this dim
-            spec = specifications.get_specification_category(eval_dim, all_classnames)
-            # class_idx -> concept_label
-            class_to_concept = np.zeros(len(all_classnames), dtype=int)
-            for cn, s in spec.items():
-                class_to_concept[all_classnames.index(cn)] = s["classlabel"]
-            
-            eval_preds = class_to_concept[preds]
+            eval_preds = class_to_concept_maps[eval_dim][preds]
             eval_labels = concept_labels_test[eval_dim]
             acc = (eval_preds == eval_labels).mean()
             random_baseline = 1.0 / len(value_names[eval_dim])
@@ -571,6 +673,30 @@ def test_is_causal(
                 f"  ablate={ablate_dim} | eval={eval_dim} | "
                 f"acc={acc:.4f} (baseline={random_baseline:.3f}) {tag}"
             )
+
+    # Random neuron ablation baseline.
+    print(f"[Test 4 Baseline] Random ablation ({N_BASELINE_CAUSAL_SAMPLES} samples) ...")
+    num_features = A_test.shape[1]
+    for ablate_dim in CONCEPT_DIMS:
+        n_to_ablate = len(value_names[ablate_dim])
+        rand_ablated_accs = []
+        rand_others_accs = []
+        for _ in range(N_BASELINE_CAUSAL_SAMPLES):
+            rand_neurons = np.random.choice(num_features, size=n_to_ablate, replace=False).tolist()
+            rand_preds = _ablate_and_predict(A_test, rand_neurons)
+            for eval_dim in CONCEPT_DIMS:
+                rand_eval = class_to_concept_maps[eval_dim][rand_preds]
+                rand_acc = float((rand_eval == concept_labels_test[eval_dim]).mean())
+                if eval_dim == ablate_dim:
+                    rand_ablated_accs.append(rand_acc)
+                else:
+                    rand_others_accs.append(rand_acc)
+        results[f"baseline_random_ablate={ablate_dim}_ablated_acc"] = float(np.mean(rand_ablated_accs))
+        results[f"baseline_random_ablate={ablate_dim}_others_acc"] = float(np.mean(rand_others_accs))
+        print(
+            f"  baseline ablate={ablate_dim} | ablated_acc={np.mean(rand_ablated_accs):.4f} | "
+            f"others_acc={np.mean(rand_others_accs):.4f}"
+        )
 
     return results
 
@@ -595,36 +721,18 @@ def main(FLAGS):
     sae_layer = payload["sae_layer"]
     sae_mode = payload["sae_mode"]
 
-    backbone_head = head 
-    if backbone_head is None:
-        # Load pretrained linear probe from checkpoints
-        try:
-            import glob
-            # The linear probes are trained with finetune_model=linear and dataspec=classes.
-            # We search for a checkpoint that matches this seed, pretrain_model, and layer.
-            # E.g. train-*se:{FLAGS.seed}*-fi:li-pr:{FLAGS.pretrain_model}*-da:cl-{sae_layer}.ckpt
-            pattern = f"checkpoints/train-*se:{FLAGS.seed}*-fi:li*-pr:{FLAGS.pretrain_model[:2]}*-da:cl-{sae_layer}.ckpt"
-            # In flags.__dict_to_string, 'RawCnn' is not truncated, so we use FLAGS.pretrain_model directly,
-            # but flags shorten_if_str handles 'RawCnn' as 'RawCnn'. Let's ensure the pattern matches.
-            # The pattern looks like: train-ba:256-n_:100-se:6-fi:li-pr:RawCnn-sa:1000-da:de-da:cl-conv_layer0.ckpt
-            pattern = f"checkpoints/train-*se:{FLAGS.seed}-fi:li-pr:{FLAGS.pretrain_model}*-da:cl-{sae_layer}.ckpt"
-            
-            matches = glob.glob(pattern)
-            
-            if matches:
-                checkpoint_path = matches[0]
-                from models import linear as linear_model
-                backbone_head = linear_model.Linear.load_from_checkpoint(
-                    checkpoint_path=checkpoint_path
-                )
-                backbone_head.to(device)
-                backbone_head.eval()
-                print(f"  [eval] Loaded backbone head from {checkpoint_path}")
-            else:
-                print(f"  [eval] Could not find backbone head matching pattern: {pattern}")
-                
-        except Exception as e:
-            print(f"  [eval] Could not load backbone head: {e}")
+    # Load backbone for evaluation.
+    if head is not None:
+        # Integrated mode: backbone was trained jointly with SAE, saved in checkpoint.
+        backbone = head
+        print(f"[eval] Using integrated backbone from SAE checkpoint")
+    else:
+        # Post-hoc mode: load the separately pretrained backbone.
+        from dataset_transform import load_raw_cnn
+        backbone, _ = load_raw_cnn(FLAGS, device, FLAGS.data_path)
+        print(f"[eval] Loaded pretrained backbone")
+    backbone.eval()
+
 
     # Load latents and concept labels for main dataset.
     FLAGS.dataspec = "classes"
@@ -667,13 +775,14 @@ def main(FLAGS):
         FLAGS.data_path = "t1colors" if "color" in data_path_train else "t1"
         FLAGS.dataspec = "classes"
         dataset_path_t1 = flags.transformed_id(FLAGS, data_path_train)
-        latents_t1 = helpers._get_vector_layer(dataset_path_t1, device, sae_layer, "avg")
+        latents_t1 = helpers._get_vector_layer(dataset_path_t1, device, sae_layer)
         datadesc_t1, _ = helpers.load_info(FLAGS)
         class_labels_t1 = th.tensor(datadesc_t1.classlabel.values, dtype=th.long, device=device)
+        
         FLAGS.data_path = data_path_train
 
         t1_results = test_is_grounded(
-            sae, backbone_head, latents_t1, datadesc_t1,
+            sae, backbone, sae_layer, latents_t1, datadesc_t1,
             assignment, class_labels_t1, device
         )
         all_results["test1_is_grounded"] = t1_results
@@ -710,7 +819,7 @@ def main(FLAGS):
     print("TEST 4: is_causal")
     print("="*60)
     t4_results = test_is_causal(
-        sae, backbone_head, latents, concept_labels, value_names,
+        sae, backbone, sae_layer, latents, concept_labels, value_names,
         assignment, class_labels, datadesc, is_test, device
     )
     all_results["test4_is_causal"] = t4_results

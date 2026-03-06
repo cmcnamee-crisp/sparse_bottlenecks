@@ -26,13 +26,13 @@ DATE="sae_experiments"
 # Configuration (Must match run_sae.sh)
 # ---------------------------------------------------------------------------
 SEEDS="6 7 8 9 10"
-LAYERS="conv_layer0 layer1 layer2 layer3 fc"
+LAYERS="layer1 layer2 layer3 fc"
 SAE_ARCHS="standard topk"
 SAE_MODES="post_hoc integrated"
 SAE_FEATURES=4096
 L1_COEFF=1e-3
 TOPK_K=32
-SAE_EPOCHS=50
+PRETRAIN_EPOCHS=100   # Must match the --n_epochs used in run_from_scratch.sh pretrain step.
 SAE_LR=1e-4
 
 # ---------------------------------------------------------------------------
@@ -47,10 +47,9 @@ for SEED in $SEEDS; do
                 echo "  [SAE EVAL] mode=$MODE arch=$ARCH layer=$LAYER seed=$SEED"
                 python sae_eval.py \
                     --pretrain_model RawCnn \
-                    --finetune_model linear \
                     --data_path default \
                     --seed $SEED \
-                    --n_epochs $SAE_EPOCHS \
+                    --n_epochs $PRETRAIN_EPOCHS \
                     --samples_per_class 1000 \
                     --jobname $DATE \
                     --batch_size 256 \
@@ -61,8 +60,9 @@ for SEED in $SEEDS; do
                     --sae_l1_coeff $L1_COEFF \
                     --sae_topk_k $TOPK_K \
                     --sae_lr $SAE_LR \
-                    --layout_inlp_or_holdout oval \
-                    --shape_inlp_or_holdout clean
+                    --layout_inlp_or_holdout column \
+                    --shape_inlp_or_holdout oval \
+                    --stroke_inlp_or_holdout clean
             done
         done
     done
