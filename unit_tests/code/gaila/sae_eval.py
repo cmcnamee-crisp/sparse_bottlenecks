@@ -126,9 +126,11 @@ def _load_all_latents_and_labels(FLAGS, layer: str, device: str):
     """Load pre-computed latents + all concept labels for the full dataset."""
     FLAGS.dataspec = "classes"
     datadesc, dataspec = helpers.load_info(FLAGS)
-    dataset_path = flags.transformed_id(FLAGS)
+    dataset_path = flags.transformed_id(FLAGS, is_raw=True)
 
     latents = helpers._get_vector_layer(dataset_path, device, layer)
+    if FLAGS.sae_mode == "integrated":
+        latents = latents.flatten(1)
     class_labels = th.tensor(datadesc.classlabel.values, dtype=th.long, device=device)
     concept_labels = _get_concept_labels(datadesc, FLAGS)  # each is np.ndarray
     value_names = _get_concept_value_names(datadesc, FLAGS)
@@ -163,6 +165,7 @@ def compute_concept_assignment(
     latents: th.Tensor,
     concept_labels: Dict[str, np.ndarray],
     value_names: Dict[str, List[str]],
+    sae_mode: str,
     activation_threshold: float = 0.0,
     device: str = "cpu",
     batch_size: int = 512,
@@ -179,9 +182,15 @@ def compute_concept_assignment(
     print("[Prerequisite] Computing SAE activations ...")
     sae.eval()
     all_acts = []
+    
+    # We must flatten integrated SAE inputs to match training
+    is_integrated = (sae_mode == "integrated")
+    
     with th.no_grad():
         for i in range(0, len(latents), batch_size):
             z_batch = latents[i : i + batch_size].float().to(device)
+            if is_integrated:
+                z_batch = z_batch.flatten(1)
             a = sae.encode(z_batch)
             all_acts.append(a.cpu().numpy())
     A = np.vstack(all_acts)  # (N, num_features)
@@ -395,6 +404,7 @@ def test_is_token_of_type(
     value_names: Dict[str, List[str]],
     assignment: Dict[str, int],
     is_unseen: np.ndarray,
+    sae_mode: str,
     activation_threshold: float = 0.0,
     device: str = "cpu",
     batch_size: int = 512,
@@ -407,9 +417,12 @@ def test_is_token_of_type(
     print("[Test 2] Computing activations on unseen samples ...")
     sae.eval()
     all_acts = []
+    is_integrated = (sae_mode == "integrated")
     with th.no_grad():
         for i in range(0, len(latents), batch_size):
             z_batch = latents[i : i + batch_size].float().to(device)
+            if is_integrated:
+                z_batch = z_batch.flatten(1)
             a = sae.encode(z_batch)
             all_acts.append(a.cpu().numpy())
     A = np.vstack(all_acts)
@@ -445,7 +458,8 @@ def test_is_modular(
     value_names: Dict[str, List[str]],
     assignment: Dict[str, int],
     datadesc: pd.DataFrame,
-    device: str,
+    sae_mode: str,
+    device: str = "cpu",
     batch_size: int = 512,
 ) -> Dict:
     """Test 3: is_modular — input intervention analysis.
@@ -462,9 +476,13 @@ def test_is_modular(
     print("[Test 3] Computing activations for modularity analysis ...")
     sae.eval()
     all_acts = []
+    is_integrated = (sae_mode == "integrated")
+    
     with th.no_grad():
         for i in range(0, len(latents), batch_size):
             z_batch = latents[i : i + batch_size].float().to(device)
+            if is_integrated:
+                z_batch = z_batch.flatten(1)
             a = sae.encode(z_batch)
             all_acts.append(a.cpu().numpy())
     A = np.vstack(all_acts)
@@ -589,6 +607,7 @@ def test_is_causal(
     class_labels: th.Tensor,
     datadesc: pd.DataFrame,
     is_test: np.ndarray,
+    sae_mode: str,
     device: str,
     batch_size: int = 512,
 ) -> Dict:
@@ -606,24 +625,30 @@ def test_is_causal(
         print("[Test 4] No backbone available; skipping.")
         return {}
 
-    print("[Test 4] Computing full-dataset activations ...")
-    sae.eval()
-    backbone.eval()
-
+    # Ensure all predictions correspond to the newly flattened A
+    results = {}
+    
     test_mask = is_test
     latents_test = latents[test_mask]
     class_labels_test = class_labels[test_mask]
     concept_labels_test = {k: v[test_mask] for k, v in concept_labels.items()}
 
-    all_acts = []
+    all_a = []
+    is_integrated = (sae_mode == "integrated")
+    
     with th.no_grad():
         for i in range(0, len(latents_test), batch_size):
             z_batch = latents_test[i : i + batch_size].float().to(device)
+            if is_integrated:
+                z_batch = z_batch.flatten(1)
             a = sae.encode(z_batch)
-            all_acts.append(a.cpu())
-    A_test = th.cat(all_acts, dim=0)  # (N_test, num_features)
+            all_a.append(a)
+    A = th.cat(all_a, dim=0)  # (N_test, num_features)
 
     results = {}
+    
+    # T4 uses original latents when ablating
+    Z_test = latents_test.clone().to(device)
 
     # Precompute class-to-concept maps (reused for real + baseline).
     all_classnames = sorted(datadesc.classname.unique())
@@ -702,6 +727,197 @@ def test_is_causal(
 
 
 # ---------------------------------------------------------------------------
+# 5. Test 5 — Layer Probes (Integrated Models)
+# ---------------------------------------------------------------------------
+
+def _get_activations_at_layer(backbone, sae_layer, probe_layer, Z_hat, batch_size, device):
+    """Forward Z_hat from sae_layer through the backbone and extract activations at probe_layer.
+
+    Uses the backbone's own ``forward_from_layer`` / ``forward_to_layer`` helpers when
+    possible, but falls back to manual encoder slicing so that we can stop at an
+    *intermediate* layer rather than running all the way to logits.
+
+    Works for any backbone that exposes ``get_cnn_activations``-style layer names and
+    a Sequential ``encoder`` attribute (i.e. the CNN and ResNet models in this repo).
+    """
+    from dataset_transform import _format_layer
+
+    # Build a mapping from layer name → encoder slice endpoint.
+    # This is the same mapping used by dataset_transform.get_cnn_activations and
+    # models.cnn.CNN.forward_to_layer, but we derive it dynamically so that it
+    # adapts to any backbone with a Sequential encoder.
+    all_layers = list(getattr(backbone, "_layer_slices", {}).keys())
+    if not all_layers:
+        # Fallback: reconstruct from the convention used by CNN / ResNet models.
+        # Layer boundaries are recorded in forward_to_layer; mirror that logic.
+        if hasattr(backbone, "forward_to_layer"):
+            # CNN stores LAYER_SHAPES inside forward_from_layer; we just need
+            # the slice *end* indices to know where each layer finishes.
+            _slices = {
+                "conv_layer0": (0, 2),
+                "layer1":      (0, 5),
+                "layer2":      (0, 8),
+                "layer3":      (0, 11),
+                "fc":          (0, len(backbone.encoder)),
+            }
+        else:
+            raise RuntimeError("Cannot determine layer slices for this backbone.")
+    else:
+        _slices = backbone._layer_slices
+
+    LAYER_SHAPES = {
+        "conv_layer0": (64, 111, 111),
+        "layer1":      (32, 55, 55),
+        "layer2":      (16, 27, 27),
+        "layer3":      (8,  13, 13),
+    }
+
+    def _unflatten_spatial(x, C, H, W):
+        if x.ndim == 2:
+            if x.shape[1] == C * H * W:
+                x = x.unflatten(1, (C, H, W))
+            elif x.shape[1] == H * W:
+                x = x.unflatten(1, (H, W)).unsqueeze(1).expand(-1, C, -1, -1)
+                x = x.contiguous()
+        return x
+
+    # Determine encoder index range: from end-of-sae_layer to end-of-probe_layer
+    sae_end = _slices[sae_layer][1]
+    probe_end = _slices[probe_layer][1]
+
+    layer_acts = []
+    with th.no_grad():
+        for i in range(0, len(Z_hat), batch_size):
+            z_hat_batch = Z_hat[i:i + batch_size].float().to(device)
+
+            # Unflatten spatial layers so conv operations work
+            if sae_layer in LAYER_SHAPES:
+                C, H, W = LAYER_SHAPES[sae_layer]
+                z_hat_batch = _unflatten_spatial(z_hat_batch, C, H, W)
+
+            # Forward through the encoder slice [sae_end, probe_end)
+            act = backbone.encoder[sae_end:probe_end](z_hat_batch)
+            act_flat = _format_layer(act)
+            layer_acts.append(act_flat.cpu())
+
+    return th.cat(layer_acts, dim=0)
+
+
+def test_downstream_probes(
+    sae,
+    backbone: nn.Module,
+    sae_layer: str,
+    latents: th.Tensor,
+    is_test: np.ndarray,
+    device: str,
+    FLAGS,
+    batch_size: int = 512,
+) -> Dict:
+    """Test 5: Layer Probes for Integrated Models.
+
+    Evaluates linear probes on ALL layers of the backbone (not just downstream)
+    when activations are generated by passing SAE-reconstructed features through
+    the network.  This reveals whether the integrated sparse bottleneck affects
+    concept representations at *every* layer — upstream, same, and downstream.
+
+    For each probe layer we:
+      1. Forward Z_hat (SAE reconstruction of the sae_layer activations) through
+         the backbone from sae_layer → probe_layer.
+      2. Load a pre-trained linear probe for that layer.
+      3. Measure classification accuracy.
+
+    Layers *upstream* of the SAE layer cannot be reached by forwarding Z_hat
+    through the backbone (they precede the bottleneck).  For those layers we
+    instead load the raw backbone activations directly — the interesting question
+    is whether end-to-end integrated training changed those representations
+    compared to a model without the bottleneck.
+    """
+    print("[Test 5] Probing ALL layers with integrated SAE...")
+    sae.eval()
+    backbone.eval()
+    test_mask = is_test
+    latents_test = latents[test_mask]
+
+    # 1. Get Z_hat from the SAE
+    all_zhat = []
+    with th.no_grad():
+        for i in range(0, len(latents_test), batch_size):
+            z_batch = latents_test[i : i + batch_size].float().to(device)
+            z_hat = sae(z_batch)
+            all_zhat.append(z_hat.cpu())
+    Z_hat = th.cat(all_zhat, dim=0)
+
+    # 2. Determine all probe layers (exclude conv_layer0 — OOM on cluster)
+    all_layers = flags.get_layers(FLAGS)
+    probe_layers = [l for l in all_layers if l != "conv_layer0"]
+
+    try:
+        sae_layer_idx = all_layers.index(sae_layer)
+    except ValueError:
+        print(f"  sae_layer '{sae_layer}' not found in model layers; skipping.")
+        return {}
+
+    results = {}
+
+    # Get labels for the test set
+    FLAGS.dataspec = "classes"
+    datadesc, ds_info = helpers.load_info(FLAGS)
+    class_labels_test = th.tensor(datadesc.classlabel.values, dtype=th.long)[test_mask]
+
+    from models import linear
+
+    for probe_layer in probe_layers:
+        probe_layer_idx = all_layers.index(probe_layer)
+
+        if probe_layer_idx > sae_layer_idx:
+            # --- Downstream of SAE: forward Z_hat through backbone ---
+            print(f"  Probing layer (downstream): {probe_layer}")
+            layer_acts = _get_activations_at_layer(
+                backbone, sae_layer, probe_layer, Z_hat, batch_size, device
+            )
+        elif probe_layer_idx == sae_layer_idx:
+            # --- Same layer as SAE: use Z_hat directly ---
+            print(f"  Probing layer (sae layer):  {probe_layer}")
+            layer_acts = Z_hat
+        else:
+            # --- Upstream of SAE: use raw backbone activations ---
+            # These are the *integrated* backbone's own activations; comparing
+            # them to a non-bottlenecked baseline shows whether integrated
+            # training changed upstream representations.
+            print(f"  Probing layer (upstream):   {probe_layer}")
+            try:
+                raw_path = flags.transformed_id(FLAGS, is_raw=True)
+                layer_acts = helpers._get_vector_layer(raw_path, device, probe_layer)
+                layer_acts = layer_acts[test_mask]
+            except Exception as e:
+                print(f"    Could not load upstream activations for {probe_layer}: {e}")
+                continue
+
+        # Load pre-trained linear probe for this layer
+        try:
+            train_id = flags.train_layerwise_id(FLAGS, probe_layer)
+            probe_path = f"checkpoints/{train_id}.ckpt"
+            if not os.path.exists(probe_path):
+                print(f"    Probe not found: {probe_path}")
+                continue
+
+            probe = linear.Linear.load_from_checkpoint(probe_path)
+            probe.eval()
+
+            with th.no_grad():
+                logits = probe(layer_acts)
+                preds = logits.argmax(dim=-1)
+                acc = (preds == class_labels_test).float().mean()
+            
+            results[probe_layer] = float(acc)
+            print(f"    {probe_layer} accuracy: {acc:.4f}")
+            
+        except Exception as e:
+            print(f"    Error evaluating probe for {probe_layer}: {e}")
+
+    return results
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -720,6 +936,9 @@ def main(FLAGS):
 
     sae_layer = payload["sae_layer"]
     sae_mode = payload["sae_mode"]
+    
+    # Ensure FLAGS matches the loaded payload universally
+    FLAGS.sae_mode = sae_mode
 
     # Load backbone for evaluation.
     if head is not None:
@@ -748,7 +967,7 @@ def main(FLAGS):
     print("PREREQUISITE: Concept Assignment (F1 bipartite graph)")
     print("="*60)
     assignment, f1_scores, graph = compute_concept_assignment(
-        sae, latents, concept_labels, value_names, device=device
+        sae, latents, concept_labels, value_names, sae_mode=FLAGS.sae_mode, device=device
     )
 
     graph_path = f"results_sae/{FLAGS.jobname}/{sid}_concept_graph.json"
@@ -774,8 +993,14 @@ def main(FLAGS):
         data_path_train = FLAGS.data_path
         FLAGS.data_path = "t1colors" if "color" in data_path_train else "t1"
         FLAGS.dataspec = "classes"
-        dataset_path_t1 = flags.transformed_id(FLAGS, data_path_train)
+        dataset_path_t1 = flags.transformed_id(
+            FLAGS, 
+            model_data_path="default" if FLAGS.data_path != "default" else None, 
+            is_raw=True
+        )
         latents_t1 = helpers._get_vector_layer(dataset_path_t1, device, sae_layer)
+        if getattr(sae, "mode", None) == "integrated" or FLAGS.sae_mode == "integrated":
+            latents_t1 = latents_t1.flatten(1)
         datadesc_t1, _ = helpers.load_info(FLAGS)
         class_labels_t1 = th.tensor(datadesc_t1.classlabel.values, dtype=th.long, device=device)
         
@@ -797,9 +1022,10 @@ def main(FLAGS):
     print("TEST 2: is_token_of_type")
     print("="*60)
     t2_results = test_is_token_of_type(
-        sae, latents, concept_labels, value_names, assignment, is_unseen, device=device
+        sae, latents, concept_labels, value_names, 
+        assignment, is_unseen, sae_mode=FLAGS.sae_mode, device=device
     )
-    all_results["test2_is_token_of_type"] = t2_results
+    all_results["is_token_of_type"] = t2_results
 
     # ------------------------------------------------------------------
     # Test 3: is_modular
@@ -808,9 +1034,10 @@ def main(FLAGS):
     print("TEST 3: is_modular")
     print("="*60)
     t3_results = test_is_modular(
-        sae, latents, concept_labels, value_names, assignment, datadesc, device
+        sae, latents, concept_labels, value_names, 
+        assignment, datadesc, sae_mode=FLAGS.sae_mode, device=device
     )
-    all_results["test3_is_modular"] = t3_results
+    all_results["modularity"] = t3_results
 
     # ------------------------------------------------------------------
     # Test 4: is_causal
@@ -819,10 +1046,26 @@ def main(FLAGS):
     print("TEST 4: is_causal")
     print("="*60)
     t4_results = test_is_causal(
-        sae, backbone, sae_layer, latents, concept_labels, value_names,
-        assignment, class_labels, datadesc, is_test, device
+        sae, backbone, sae_layer, latents, concept_labels, value_names, 
+        assignment, class_labels, datadesc, is_test, sae_mode=FLAGS.sae_mode, device=device
     )
-    all_results["test4_is_causal"] = t4_results
+    all_results["is_causal"] = t4_results
+
+    # ------------------------------------------------------------------
+    # Test 5: Layer Probes (Integrated Models — all layers)
+    # ------------------------------------------------------------------
+    if sae_mode == "integrated" and backbone is not None:
+        print("\n" + "="*60)
+        print("TEST 5: Layer Probes (Integrated — all layers)")
+        print("="*60)
+        t5_results = test_downstream_probes(
+            sae, backbone, sae_layer, latents, is_test, device, FLAGS
+        )
+        all_results["test5_downstream_probes"] = t5_results
+    else:
+        print("\n" + "="*60)
+        print("TEST 5: Layer Probes (Skipped — post-hoc mode)")
+        print("="*60)
 
     # ------------------------------------------------------------------
     # Save all results
@@ -835,7 +1078,7 @@ def main(FLAGS):
 
 
 if __name__ == "__main__":
-    import flags as _flags
+    import flags
     parser = get_sae_flags()
     FLAGS = parser.parse_args()
     main(FLAGS)
